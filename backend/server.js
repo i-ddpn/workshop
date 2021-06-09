@@ -5,6 +5,7 @@ import connectDB from './config/db.js'
 
 import serviceRoutes from './routes/serviceRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import positionRoutes from './routes/positionRoutes.js'
 
 dotenv.config()
 
@@ -14,6 +15,7 @@ const app = express()
 app.use(express.json())
 app.use('/api/users', userRoutes)
 app.use('/api/services', serviceRoutes)
+app.use('/api/positions', positionRoutes)
 app.use(notFound)
 app.use(errorHandler)
 

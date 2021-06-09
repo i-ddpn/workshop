@@ -28,4 +28,13 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 })
 
-export { protect }
+const admin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next()
+  } else {
+    req.status(401)
+    throw new Error('Недостаточно прав')
+  }
+}
+
+export { protect, admin }
