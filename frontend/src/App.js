@@ -10,7 +10,7 @@ const App = () => {
       <Header />
       <main className='py-3'>
         <Container>
-          <Route path='/' component={Container} exact />
+          <Route path='/' component={Footer} exact />
         </Container>
       </main>
       <Footer />
