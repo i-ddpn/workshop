@@ -18,6 +18,7 @@ import OrderListScreen from './screens/OrderListScreen'
 import OrderScreen from './screens/OrderScreen'
 import OrderCreateScreen from './screens/OrderCreateScreen'
 import OrderEditScreen from './screens/OrderEditScreen'
+import OrderPrintScreen from './screens/OrderPrintScreen'
 
 import ClientListScreen from './screens/ClientListScreen'
 import ClientScreen from './screens/ClientScreen'
@@ -27,6 +28,8 @@ import ClientEditScreen from './screens/ClientEditScreen'
 import StatsScreen from './screens/StatsScreen'
 import StatsMastersScreen from './screens/StatsMastersScreen'
 import StatsManagersScreen from './screens/StatsManagersScreen'
+
+import ReportMasterScreen from './screens/ReportMasterScreen'
 
 const App = () => {
   return (
@@ -42,6 +45,7 @@ const App = () => {
 
             <Route path='/orders/create' component={OrderCreateScreen} />
             <Route path='/orders/:id/edit' component={OrderEditScreen} />
+            <Route path='/orders/:id/print' component={OrderPrintScreen} />
             <Route path='/orders/:id' component={OrderScreen} />
             <Route path='/orders' component={OrderListScreen} />
 
@@ -53,6 +57,8 @@ const App = () => {
             <Route path='/stats/masters' component={StatsMastersScreen} />
             <Route path='/stats/managers' component={StatsManagersScreen} />
             <Route path='/stats' component={StatsScreen} />
+
+            <Route path='/report/my' component={ReportMasterScreen} />
 
             <Route path='/profile' component={ProfileScreen} />
 

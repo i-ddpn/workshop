@@ -26,6 +26,15 @@ const Header = () => {
             <Nav className='ms-auto'>
               {userInfo &&
                 userInfo.position &&
+                userInfo.position.name === 'Мастер' && (
+                  <LinkContainer to='/report/my'>
+                    <Nav.Link>
+                      <i className='fas fa-chart-bar'></i> Отчёт
+                    </Nav.Link>
+                  </LinkContainer>
+                )}
+              {userInfo &&
+                userInfo.position &&
                 userInfo.position.name === 'Директор' && (
                   <LinkContainer to='/stats'>
                     <Nav.Link>

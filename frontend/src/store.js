@@ -30,6 +30,7 @@ import {
   statsMastersReducer,
   statsManagersReducer,
 } from './reducers/statsReducers'
+import { reportMasterReducer } from './reducers/reportReducers'
 
 const reducer = combineReducers({
   serviceList: serviceListReducer,
@@ -53,6 +54,7 @@ const reducer = combineReducers({
   clientEdit: clientEditReducer,
   statsMasters: statsMastersReducer,
   statsManagers: statsManagersReducer,
+  reportMaster: reportMasterReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

@@ -9,6 +9,7 @@ const orderSchema = mongoose.Schema({
   service: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Service',
+    required: true,
   },
   manager: {
     type: mongoose.Schema.Types.ObjectId,

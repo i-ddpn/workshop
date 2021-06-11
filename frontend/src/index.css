@@ -5,3 +5,58 @@ main {
 .text-right {
   text-align: right;
 }
+
+.print table {
+  border-collapse: collapse;
+}
+
+.print table td,
+.print table th {
+  border: 1px solid black;
+}
+
+.print .left {
+  border-right: 0;
+}
+
+.print .right {
+  border-left: 0;
+  text-align: right;
+}
+
+.print .underlined {
+  display: inline-block;
+  border-bottom: 1px solid black;
+}
+
+.print .fio-blank {
+  width: 300px;
+}
+
+.print .signature-blank {
+  width: 100px;
+}
+
+.print .sub {
+  font-size: 12px;
+  font-style: italic;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+.print .name {
+  margin-bottom: 15px;
+  font-size: 16px;
+  width: 400px;
+}
+
+.print .order-table td,
+.order-table th {
+  padding: 10px 15px;
+}
+
+.print .report-table td,
+.report-table th {
+  padding: 0 2px;
+}

@@ -8,6 +8,7 @@ import FormContainer from '../components/FormContainer'
 import { getOrderDetails, editOrder } from '../actions/orderActions'
 import { listOrderStatuses } from '../actions/orderStatusActions'
 import { ORDER_EDIT_RESET } from '../constants/orderConstants'
+import OrderInfo from '../components/OrderInfo'
 
 const OrderEditScreen = ({ match, history }) => {
   const orderId = match.params.id
@@ -71,6 +72,7 @@ const OrderEditScreen = ({ match, history }) => {
       <Link to='/orders' className='btn btn-light my-3'>
         Назад
       </Link>
+      {!loading && <OrderInfo order={order} />}
       <FormContainer>
         <h1>Редактировать заказ</h1>
         {errorEdit && <Message variant='danger'>{errorEdit}</Message>}
@@ -84,26 +86,28 @@ const OrderEditScreen = ({ match, history }) => {
         ) : errorEdit ? (
           <Message variant='danger'>{errorEdit}</Message>
         ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId='status'>
-              <Form.Label>Состояние заказа</Form.Label>
-              <Form.Control
-                as='select'
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                {orderStatuses.map((orderStatus) => (
-                  <option key={orderStatus._id} value={orderStatus._id}>
-                    {orderStatus.name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
+          <>
+            <Form onSubmit={submitHandler}>
+              <Form.Group controlId='status'>
+                <Form.Label>Состояние заказа</Form.Label>
+                <Form.Control
+                  as='select'
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  {orderStatuses.map((orderStatus) => (
+                    <option key={orderStatus._id} value={orderStatus._id}>
+                      {orderStatus.name}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
 
-            <Button type='submit' variant='primary'>
-              Изменить
-            </Button>
-          </Form>
+              <Button type='submit' variant='primary'>
+                Изменить
+              </Button>
+            </Form>
+          </>
         )}
       </FormContainer>
     </>

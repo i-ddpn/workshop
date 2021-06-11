@@ -7,9 +7,11 @@ const clientSchema = mongoose.Schema({
   },
   middleName: {
     type: String,
+    default: '',
   },
   lastName: {
     type: String,
+    default: '',
   },
   phoneNumber: {
     type: String,
