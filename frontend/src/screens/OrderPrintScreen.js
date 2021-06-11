@@ -51,62 +51,64 @@ const OrderPrintScreen = ({ history, match }) => {
           </Link>
           <h1>Заказ</h1>
           <div className='print'>
-            <div class='underlined name'>"Ремонтная мастерская"</div>
-            <table class='order-table'>
-              <tr>
-                <th colspan='4'>{typeLabel}</th>
-              </tr>
-              <tr>
-                <td class='left'>{objectLabel} объект</td>
-                <td class='right'>
-                  <strong>{order.object}</strong>
-                </td>
-                <td class='left'>Наименование услуги</td>
-                <td class='right'>
-                  <strong>{order.service && order.service.name}</strong>
-                </td>
-              </tr>
-              <tr>
-                <td class='left' colspan='3'>
-                  Дата {dateLabel}
-                </td>
-                <td class='right'>{date}</td>
-              </tr>
-              <tr>
-                <td class='left' colspan='1'>
-                  ФИО клиента
-                </td>
-                <td class='right' colspan='3'>
-                  {order.client && order.client.lastName}{' '}
-                  {order.client && order.client.firstName}{' '}
-                  {order.client && order.client.middleName}
-                </td>
-              </tr>
-              {order.status && order.status.name.includes('возвращен') && (
-                <>
-                  <td class='left' colspan='1'>
-                    Цена
+            <div className='underlined name'>"Ремонтная мастерская"</div>
+            <table className='order-table'>
+              <tbody>
+                <tr>
+                  <th colSpan='4'>{typeLabel}</th>
+                </tr>
+                <tr>
+                  <td className='left'>{objectLabel} объект</td>
+                  <td className='right'>
+                    <strong>{order.object}</strong>
                   </td>
-                  <td class='right' colspan='3'>
-                    {order.service && order.service.price}
+                  <td className='left'>Наименование услуги</td>
+                  <td className='right'>
+                    <strong>{order.service && order.service.name}</strong>
                   </td>
-                </>
-              )}
-              <tr>
-                <td class='left' colspan='3'>
-                  <p>
-                    {managerLabel}:{' '}
-                    <span class='underlined fio-blank'>&nbsp;</span>
-                  </p>
-                  <p class='sub'>(Фамилия И.О.)</p>
-                </td>
-                <td class='right'>
-                  <p>
-                    <span class='underlined signature-blank'>&nbsp;</span>
-                  </p>
-                  <p class='sub'>(подпись)</p>
-                </td>
-              </tr>
+                </tr>
+                <tr>
+                  <td className='left' colSpan='3'>
+                    Дата {dateLabel}
+                  </td>
+                  <td className='right'>{date}</td>
+                </tr>
+                <tr>
+                  <td className='left' colSpan='1'>
+                    ФИО клиента
+                  </td>
+                  <td className='right' colSpan='3'>
+                    {order.client && order.client.lastName}{' '}
+                    {order.client && order.client.firstName}{' '}
+                    {order.client && order.client.middleName}
+                  </td>
+                </tr>
+                {order.status && order.status.name.includes('возвращен') && (
+                  <>
+                    <td className='left' colSpan='1'>
+                      Цена
+                    </td>
+                    <td className='right' colSpan='3'>
+                      {order.service && order.service.price}
+                    </td>
+                  </>
+                )}
+                <tr>
+                  <td className='left' colSpan='3'>
+                    <p>
+                      {managerLabel}:{' '}
+                      <span className='underlined fio-blank'>&nbsp;</span>
+                    </p>
+                    <p className='sub'>(Фамилия И.О.)</p>
+                  </td>
+                  <td className='right'>
+                    <p>
+                      <span className='underlined signature-blank'>&nbsp;</span>
+                    </p>
+                    <p className='sub'>(подпись)</p>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </>

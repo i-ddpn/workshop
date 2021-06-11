@@ -34,7 +34,15 @@ const OrderScreen = ({ history, match }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <OrderInfo order={order} />
+        <>
+          <OrderInfo order={order} />
+          <Link
+            to={`/orders/${order._id}/print`}
+            className='btn btn-light my-3'
+          >
+            Печать
+          </Link>
+        </>
       )}
     </>
   )
