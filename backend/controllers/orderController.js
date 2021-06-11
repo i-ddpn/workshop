@@ -59,21 +59,25 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 const getOrders = asyncHandler(async (req, res) => {
+  const services = await Service.find({})
+  const orderStatuses = await OrderStatus.find({})
   const orders = await Order.find()
 
   const newOrders = []
   for (const order of orders) {
     const clientObj = (await Client.findById(order.client)) || {}
-    const managerObj = (await User.findById(order.manager)) || {}
-    const masterObj = (await User.findById(order.master)) || {}
-    const serviceObj = (await Service.findById(order.service)) || {}
-    const statusObj = (await OrderStatus.findOne(order.status)) || {}
+    const serviceObj =
+      services.find(
+        (service) => service._id.toString() === order.service.toString()
+      ) || {}
+    const statusObj =
+      orderStatuses.find(
+        (orderStatus) => orderStatus._id.toString() === order.status.toString()
+      ) || {}
 
     const newOrder = {
       ...order._doc,
       client: clientObj,
-      manager: managerObj,
-      master: masterObj,
       service: serviceObj,
       status: statusObj,
     }

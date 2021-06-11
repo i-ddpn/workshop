@@ -14,6 +14,9 @@ import Order from '../models/orderModel.js'
 import OrderStatus from '../models/orderStatusModel.js'
 import Service from '../models/serviceModel.js'
 
+import { NUMBER_OF_ORDERS } from './constants.js'
+import { smartphones } from './auxiliary/smartphones.js'
+
 import connectDB from '../config/db.js'
 
 dotenv.config()
@@ -32,12 +35,60 @@ const importData = async () => {
     const createdPositions = await Position.insertMany(positions)
 
     await User.insertMany(
-      users.map((user) => ({ ...user, position: createdPositions[2] }))
+      users.map((user) => ({
+        ...user,
+        position: createdPositions[user.positionNumber],
+      }))
     )
 
-    await Client.insertMany(clients)
-    await OrderStatus.insertMany(orderStatuses)
-    await Service.insertMany(services)
+    const createdClients = await Client.insertMany(clients)
+    const createdOrderStatuses = await OrderStatus.insertMany(orderStatuses)
+    const createdServices = await Service.insertMany(services)
+
+    const managers = await User.find({ position: createdPositions[1] })
+    const masters = await User.find({ position: createdPositions[0] })
+
+    const firstDate = 1613374116724
+    const lastDate = 1623374116724
+
+    const orders = []
+    for (let i = 0; i < NUMBER_OF_ORDERS; i++) {
+      const client =
+        createdClients[Math.floor(Math.random() * createdClients.length)]
+      const service =
+        createdServices[Math.floor(Math.random() * createdServices.length)]
+      const manager = managers[Math.floor(Math.random() * managers.length)]
+      const status =
+        createdOrderStatuses[
+          Math.floor(Math.random() * createdOrderStatuses.length)
+        ]
+      const master =
+        status.name !== 'Принят менеджером'
+          ? masters[Math.floor(Math.random() * masters.length)]
+          : undefined
+      const object = smartphones[Math.floor(Math.random() * smartphones.length)]
+      const dateIn = new Date(
+        firstDate + Math.floor(Math.random() * (lastDate - firstDate))
+      )
+      const dateOut = status.name.includes('возвращен')
+        ? new Date(
+            dateIn.valueOf() + Math.floor(Math.random() * (lastDate - dateIn))
+          )
+        : undefined
+
+      orders.push({
+        client,
+        service,
+        manager,
+        master,
+        object,
+        dateIn,
+        dateOut,
+        status,
+      })
+    }
+
+    await Order.insertMany(orders)
 
     console.log('Data imported.')
     process.exit()
