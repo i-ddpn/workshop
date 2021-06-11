@@ -21,6 +21,9 @@ const ServiceListScreen = () => {
       <Link to='/stats' className='btn btn-light my-3'>
         Назад
       </Link>
+      <Link to='/stats/masters' className='btn btn-light my-3'>
+        Мастеры
+      </Link>
       <h1>Статистика менеджеров</h1>
       {loading ? (
         <Loader />
