@@ -28,7 +28,9 @@ const ClientListScreen = ({ history }) => {
   }, [dispatch, history, successDelete, userInfo])
 
   const deleteHandler = (id) => {
-    dispatch(deleteClient(id))
+    if (window.confirm('Вы уверены?')) {
+      dispatch(deleteClient(id))
+    }
   }
 
   return (
