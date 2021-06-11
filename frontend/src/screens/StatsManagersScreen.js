@@ -22,7 +22,7 @@ const ServiceListScreen = () => {
         Назад
       </Link>
       <Link to='/stats/masters' className='btn btn-light my-3'>
-        Мастеры
+        Статистика мастеров
       </Link>
       <h1>Статистика менеджеров</h1>
       {loading ? (
