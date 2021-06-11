@@ -45,6 +45,12 @@ const ClientScreen = ({ history, match }) => {
             <Col md='2'>Номер телефона</Col>
             <Col md='3'>{client.phoneNumber}</Col>
           </Row>
+          <Link
+            to={`/clients/${client._id}/edit`}
+            className='btn btn-light my-3'
+          >
+            Редактировать
+          </Link>
         </>
       )}
     </>
