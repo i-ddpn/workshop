@@ -12,7 +12,7 @@ const getServiceById = asyncHandler(async (req, res) => {
     res.json(service)
   } else {
     res.status(404)
-    throw new Error('Service not found')
+    throw new Error('Услуга не найдена')
   }
 })
 

@@ -21,6 +21,9 @@ const UserEditScreen = ({ match, history }) => {
 
   const dispatch = useDispatch()
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const userDetails = useSelector((state) => state.userDetails)
   const { loading, error, user } = userDetails
 
@@ -39,7 +42,12 @@ const UserEditScreen = ({ match, history }) => {
   } = positionList
 
   useEffect(() => {
-    dispatch(listPositions())
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listPositions())
+    } else {
+      history.push('/login')
+    }
+
     if (successEdit) {
       dispatch({ type: USER_EDIT_RESET })
       history.push(`/users/${userId}`)
@@ -55,7 +63,7 @@ const UserEditScreen = ({ match, history }) => {
         setIsAdmin(user.isAdmin)
       }
     }
-  }, [dispatch, history, userId, user, successEdit])
+  }, [dispatch, history, userId, user, successEdit, userInfo])
 
   const submitHandler = (e) => {
     e.preventDefault()

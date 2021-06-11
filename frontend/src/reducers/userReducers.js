@@ -81,7 +81,7 @@ export const userCreateReducer = (state = {}, action) => {
     case USER_CREATE_REQUEST:
       return { loading: true }
     case USER_CREATE_SUCCESS:
-      return { loading: false, success: true, userInfo: action.payload }
+      return { loading: false, success: true, user: action.payload }
     case USER_CREATE_FAIL:
       return { loading: false, error: action.payload }
     case USER_CREATE_RESET:
@@ -96,7 +96,7 @@ export const userEditReducer = (state = { user: {} }, action) => {
     case USER_EDIT_REQUEST:
       return { loading: true }
     case USER_EDIT_SUCCESS:
-      return { loading: false, success: true, userInfo: action.payload }
+      return { loading: false, success: true, user: action.payload }
     case USER_EDIT_FAIL:
       return { loading: false, error: action.payload }
     case USER_EDIT_RESET:

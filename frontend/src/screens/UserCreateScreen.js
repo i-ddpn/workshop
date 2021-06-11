@@ -22,8 +22,11 @@ const UserCreateScreen = ({ history }) => {
 
   const dispatch = useDispatch()
 
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const userCreate = useSelector((state) => state.userCreate)
-  const { loading, success, error, userInfo } = userCreate
+  const { loading, success, error, user } = userCreate
 
   const positionList = useSelector((state) => state.positionList)
   const {
@@ -33,13 +36,21 @@ const UserCreateScreen = ({ history }) => {
   } = positionList
 
   useEffect(() => {
-    dispatch(listPositions())
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listPositions())
+    } else {
+      history.push('/login')
+    }
 
     if (success) {
-      history.push(`/users/${userInfo._id}`)
+      history.push(`/users/${user._id}`)
       dispatch({ type: USER_CREATE_RESET })
     }
-  }, [dispatch, history, userInfo, success])
+  }, [dispatch, history, user, success, userInfo])
+
+  useEffect(() => {
+    setPosition(positions.length && positions[0]._id)
+  }, [positions])
 
   const submitHandler = (e) => {
     e.preventDefault()
