@@ -12,9 +12,7 @@ const createClient = asyncHandler(async (req, res) => {
   })
 
   if (client) {
-    res.status(201).json({
-      ...client._doc,
-    })
+    res.status(201).json(client)
   } else {
     res.status(400)
     throw new Error('Введены некорректные данные')
@@ -25,9 +23,7 @@ const getClientById = asyncHandler(async (req, res) => {
   const client = await Client.findById(req.params.id)
 
   if (client) {
-    res.json({
-      ...client._doc,
-    })
+    res.json(client)
   } else {
     res.status(404)
     throw new Error('Клиент не найден')
@@ -36,7 +32,7 @@ const getClientById = asyncHandler(async (req, res) => {
 
 const getClients = asyncHandler(async (req, res) => {
   const clients = await Client.find()
-  res.json(clients.map((client) => client._doc))
+  res.json(clients)
 })
 
 const deleteClient = asyncHandler(async (req, res) => {
@@ -62,9 +58,7 @@ const updateClient = asyncHandler(async (req, res) => {
 
     const updatedClient = await client.save()
 
-    res.json({
-      ...updatedClient._doc,
-    })
+    res.json(updatedClient)
   } else {
     res.status(404)
     throw new Error('Клиент не найден')

@@ -26,6 +26,10 @@ import {
   clientDetailsReducer,
   clientEditReducer,
 } from './reducers/clientReducers'
+import {
+  statsMastersReducer,
+  statsManagersReducer,
+} from './reducers/statsReducers'
 
 const reducer = combineReducers({
   serviceList: serviceListReducer,
@@ -47,6 +51,8 @@ const reducer = combineReducers({
   clientCreate: clientCreateReducer,
   clientDetails: clientDetailsReducer,
   clientEdit: clientEditReducer,
+  statsMasters: statsMastersReducer,
+  statsManagers: statsManagersReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo')

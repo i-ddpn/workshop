@@ -1,14 +1,11 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
-import User from '../models/userModel.js'
-import Client from '../models/clientModel.js'
-import Service from '../models/serviceModel.js'
 import OrderStatus from '../models/orderStatusModel.js'
 
 const createOrder = asyncHandler(async (req, res) => {
   const { client, service, object } = req.body
 
-  const order = await Order.create({
+  const createdOrder = await Order.create({
     client,
     service,
     manager: req.user,
@@ -16,19 +13,14 @@ const createOrder = asyncHandler(async (req, res) => {
     dateIn: Date.now(),
     status: await OrderStatus.findOne({ name: 'Принят менеджером' }),
   })
+  const order = await createdOrder
+    .populate('client')
+    .populate('manager')
+    .populate('service')
+    .populate('status')
 
   if (order) {
-    const clientObj = (await Client.findById(order.client)) || {}
-    const managerObj = (await User.findById(order.manager)) || {}
-    const serviceObj = (await Service.findById(order.service)) || {}
-    const statusObj = (await OrderStatus.findOne(order.status)) || {}
-    res.status(201).json({
-      ...order._doc,
-      client: clientObj,
-      manager: managerObj,
-      service: serviceObj,
-      status: statusObj,
-    })
+    res.status(201).json(order)
   } else {
     res.status(400)
     throw new Error('Введены некорректные данные')
@@ -37,21 +29,14 @@ const createOrder = asyncHandler(async (req, res) => {
 
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-  const clientObj = (await Client.findById(order.client)) || {}
-  const managerObj = (await User.findById(order.manager)) || {}
-  const masterObj = (await User.findById(order.master)) || {}
-  const serviceObj = (await Service.findById(order.service)) || {}
-  const statusObj = (await OrderStatus.findOne(order.status)) || {}
+    .populate('client')
+    .populate('manager')
+    .populate('master')
+    .populate('service')
+    .populate('status')
 
   if (order) {
-    res.json({
-      ...order._doc,
-      client: clientObj,
-      manager: managerObj,
-      master: masterObj,
-      service: serviceObj,
-      status: statusObj,
-    })
+    res.json(order)
   } else {
     res.status(404)
     throw new Error('Заказ не найден')
@@ -59,32 +44,12 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 const getOrders = asyncHandler(async (req, res) => {
-  const services = await Service.find({})
-  const orderStatuses = await OrderStatus.find({})
   const orders = await Order.find()
+    .populate('client')
+    .populate('service')
+    .populate('status')
 
-  const newOrders = []
-  for (const order of orders) {
-    const clientObj = (await Client.findById(order.client)) || {}
-    const serviceObj =
-      services.find(
-        (service) => service._id.toString() === order.service.toString()
-      ) || {}
-    const statusObj =
-      orderStatuses.find(
-        (orderStatus) => orderStatus._id.toString() === order.status.toString()
-      ) || {}
-
-    const newOrder = {
-      ...order._doc,
-      client: clientObj,
-      service: serviceObj,
-      status: statusObj,
-    }
-
-    newOrders.push(newOrder)
-  }
-  res.json(newOrders)
+  res.json(orders)
 })
 
 const deleteOrder = asyncHandler(async (req, res) => {
@@ -100,7 +65,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
 })
 
 const updateOrder = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id)
+  const order = await Order.findById(req.params.id).populate('status')
 
   if (order) {
     order.master = req.body.master || order.master
@@ -111,19 +76,7 @@ const updateOrder = asyncHandler(async (req, res) => {
 
     const updatedOrder = await order.save()
 
-    const clientObj = (await Client.findById(updatedOrder.client)) || {}
-    const managerObj = (await User.findById(updatedOrder.manager)) || {}
-    const masterObj = (await User.findById(order.master)) || {}
-    const serviceObj = (await Service.findById(updatedOrder.service)) || {}
-
-    res.json({
-      ...updatedOrder._doc,
-      client: clientObj,
-      manager: managerObj,
-      master: masterObj,
-      service: serviceObj,
-      status: statusObj,
-    })
+    res.json(updatedOrder)
   } else {
     res.status(404)
     throw new Error('Заказ не найден')

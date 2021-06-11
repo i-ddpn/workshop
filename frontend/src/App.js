@@ -24,6 +24,10 @@ import ClientScreen from './screens/ClientScreen'
 import ClientCreateScreen from './screens/ClientCreateScreen'
 import ClientEditScreen from './screens/ClientEditScreen'
 
+import StatsScreen from './screens/StatsScreen'
+import StatsMastersScreen from './screens/StatsMastersScreen'
+import StatsManagersScreen from './screens/StatsManagersScreen'
+
 const App = () => {
   return (
     <Router>
@@ -45,6 +49,10 @@ const App = () => {
             <Route path='/clients/:id/edit' component={ClientEditScreen} />
             <Route path='/clients/:id' component={ClientScreen} />
             <Route path='/clients' component={ClientListScreen} />
+
+            <Route path='/stats/masters' component={StatsMastersScreen} />
+            <Route path='/stats/managers' component={StatsManagersScreen} />
+            <Route path='/stats' component={StatsScreen} />
 
             <Route path='/profile' component={ProfileScreen} />
 

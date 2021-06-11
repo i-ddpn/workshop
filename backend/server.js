@@ -9,6 +9,7 @@ import userRoutes from './routes/userRoutes.js'
 import positionRoutes from './routes/positionRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import clientRoutes from './routes/clientRoutes.js'
+import statsRoutes from './routes/statsRoutes.js'
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ app.use('/api/clients', clientRoutes)
 app.use('/api/services', serviceRoutes)
 app.use('/api/order_statuses', orderStatusRoutes)
 app.use('/api/positions', positionRoutes)
+app.use('/api/stats', statsRoutes)
 app.use(notFound)
 app.use(errorHandler)
 

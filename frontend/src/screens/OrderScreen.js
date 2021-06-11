@@ -28,7 +28,7 @@ const OrderScreen = ({ history, match }) => {
       <Link to='/orders' className='btn btn-light my-3'>
         Назад
       </Link>
-      <h1>Профиль</h1>
+      <h1>Заказ</h1>
       {loading ? (
         <Loader />
       ) : error ? (

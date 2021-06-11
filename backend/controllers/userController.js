@@ -6,17 +6,12 @@ import Position from '../models/positionModel.js'
 const authUser = asyncHandler(async (req, res) => {
   const { login, password } = req.body
 
-  const user = await User.findOne({ login })
+  const user = await User.findOne({ login }).populate('position')
 
   if (user && (await user.matchPassword(password))) {
-    const position = (await Position.findById(user.position)) || ''
     res.json({
-      _id: user._id,
-      firstName: user.firstName,
-      middleName: user.middleName,
-      lastName: user.lastName,
-      isAdmin: user.isAdmin,
-      position: { _id: position._id, name: position.name },
+      ...user._doc,
+      password: undefined,
       token: generateToken(user._id),
     })
   } else {
@@ -43,7 +38,7 @@ const createUser = asyncHandler(async (req, res) => {
     throw new Error('Пользователь с таким логином уже существует')
   }
 
-  const user = await User.create({
+  const createdUser = await User.create({
     login,
     password,
     firstName,
@@ -53,16 +48,11 @@ const createUser = asyncHandler(async (req, res) => {
     isAdmin,
   })
 
+  const user = await createdUser.populate('position').select('-password')
+
   if (user) {
-    const positionObj = (await Position.findById(user.position)) || {}
     res.status(201).json({
-      _id: user._id,
-      login: user.login,
-      firstName: user.firstName,
-      middleName: user.middleName,
-      lastName: user.lastName,
-      isAdmin: user.isAdmin,
-      position: { _id: positionObj._id, name: positionObj.name },
+      ...user._doc,
       token: generateToken(user._id),
     })
   } else {
@@ -73,30 +63,21 @@ const createUser = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
-  const position = (await Position.findById(user.position)) || {}
+    .populate('position')
+    .select('-password')
 
   if (user) {
-    res.json({
-      _id: user._id,
-      login: user.login,
-      firstName: user.firstName,
-      middleName: user.middleName,
-      lastName: user.lastName,
-      isAdmin: user.isAdmin,
-      position: { _id: position._id, name: position.name },
-    })
+    res.json(user)
   }
 })
 
 const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select('-password')
-  const position = (await Position.findById(user.position)) || {}
+  const user = await User.findById(req.params.id)
+    .populate('position')
+    .select('-password')
 
   if (user) {
-    res.json({
-      ...user._doc,
-      position: { _id: position._id, name: position.name },
-    })
+    res.json(user)
   } else {
     res.status(404)
     throw new Error('Пользователь не найден')
@@ -104,17 +85,8 @@ const getUserById = asyncHandler(async (req, res) => {
 })
 
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find()
-  const positions = await Position.find()
-  const positionNames = {}
-  positions.forEach((position) => (positionNames[position._id] = position.name))
-
-  res.json(
-    users.map((user) => ({
-      ...user._doc,
-      position: { name: positionNames[user.position] },
-    }))
-  )
+  const users = await User.find().populate('position')
+  res.json(users)
 })
 
 const deleteUser = asyncHandler(async (req, res) => {
@@ -142,16 +114,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
     const updatedUser = await user.save()
 
-    const position = (await Position.findById(user.position)) || {}
-    res.json({
-      _id: updatedUser._id,
-      login: updatedUser.login,
-      firstName: updatedUser.firstName,
-      middleName: updatedUser.middleName,
-      lastName: updatedUser.lastName,
-      isAdmin: updatedUser.isAdmin,
-      position: { _id: position._id, name: position.name },
-    })
+    res.json(updatedUser)
   } else {
     res.status(404)
     throw new Error('Пользователь не найден')

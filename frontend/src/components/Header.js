@@ -24,6 +24,15 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto'>
+              {userInfo &&
+                userInfo.position &&
+                userInfo.position.name === 'Директор' && (
+                  <LinkContainer to='/stats'>
+                    <Nav.Link>
+                      <i className='fas fa-chart-line'></i> Статистика
+                    </Nav.Link>
+                  </LinkContainer>
+                )}
               {userInfo && (
                 <LinkContainer to='/clients'>
                   <Nav.Link>
