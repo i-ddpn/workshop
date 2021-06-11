@@ -37,7 +37,7 @@ const ServiceListScreen = () => {
             </thead>
             <tbody>
               {stats.map((statsRecord) => (
-                <tr key={statsRecord._id}>
+                <tr key={statsRecord.manager._id}>
                   <td>
                     <Link
                       to={`/users/${
